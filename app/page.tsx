@@ -1,5 +1,5 @@
 
-import Link from "next/link";
+import AuthCtaButtons from "./components/AuthCtaButtons";
 
 export default function Home() {
   return (
@@ -14,14 +14,7 @@ export default function Home() {
           and use that respect to get your own products featured.
         </p>
 
-        <div className="flex gap-4 justify-center pt-4">
-          <Link href="/market" className="px-8 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors shadow-lg shadow-blue-500/30">
-            Browse Market
-          </Link>
-          <Link href="/profile" className="px-8 py-3 bg-white text-gray-900 rounded-lg font-semibold hover:bg-gray-100 transition-colors border border-gray-200">
-            Share Your Product
-          </Link>
-        </div>
+        <AuthCtaButtons />
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pt-20 text-left">
           <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
