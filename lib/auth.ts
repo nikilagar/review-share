@@ -13,8 +13,24 @@ export const authOptions: NextAuthOptions = {
         }),
     ],
     callbacks: {
+        signIn: async ({ user }) => {
+            // Check if user is banned
+            const dbUser = await prisma.user.findUnique({
+                where: { email: user.email || "" }
+            })
+            if (dbUser && dbUser.isBanned) {
+                return false; // Block login
+            }
+            return true;
+        },
         session: async ({ session, user }) => {
             if (session?.user) {
+                // @ts-ignore
+                if (user.isBanned) {
+                    // @ts-ignore
+                    session.user = null; // Invalidate user
+                    return session;
+                }
                 session.user.id = user.id;
             }
             return session;

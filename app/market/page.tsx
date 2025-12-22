@@ -13,7 +13,8 @@ export default async function MarketPage() {
         where: {
             owner: {
                 respect: { gt: 0 },
-                email: { not: session.user.email }
+                email: { not: session.user.email },
+                isBanned: false
             }
         },
         include: {

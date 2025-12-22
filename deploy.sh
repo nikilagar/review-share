@@ -66,6 +66,8 @@ ssh -i $KEY_PATH -o StrictHostKeyChecking=no $USER@$HOST "
     [ -s \"\$NVM_DIR/nvm.sh\" ] && . \"\$NVM_DIR/nvm.sh\"
     
     npm install
+    # Generate Prisma Client to fix type errors
+    npx prisma generate
     npm run build
     
     # Configure Nginx
