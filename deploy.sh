@@ -40,7 +40,7 @@ ssh -i $KEY_PATH -o StrictHostKeyChecking=no $USER@$HOST "
 # 2. Upload Code
 echo -e "${GREEN}Uploading Code...${NC}"
 # Exclude node_modules, .next, .git
-rsync -avz --exclude 'node_modules' --exclude '.next' --exclude '.git' --exclude '.env' -e "ssh -i $KEY_PATH -o StrictHostKeyChecking=no" ./ $USER@$HOST:$APP_DIR
+rsync -avz --exclude 'node_modules' --exclude '.next' --exclude '.git' --exclude '.env' --exclude '*.db' --exclude 'prisma/*.db' -e "ssh -i $KEY_PATH -o StrictHostKeyChecking=no" ./ $USER@$HOST:$APP_DIR
 
 # 3. Upload Certificates
 echo -e "${GREEN}Uploading Certificates...${NC}"
