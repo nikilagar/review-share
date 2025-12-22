@@ -27,9 +27,9 @@ export default async function MarketPage() {
     return (
         <main className="min-h-screen bg-gray-50 py-12 px-4">
             <div className="max-w-6xl mx-auto space-y-8">
-                <div className="flex justify-between items-center">
+                <div className="space-y-2">
                     <h1 className="text-3xl font-bold">Market</h1>
-                    <p className="text-gray-500">Review products to earn respect</p>
+                    <p className="text-gray-500 text-lg">Review products to earn respect</p>
                 </div>
 
                 {products.length === 0 ? (

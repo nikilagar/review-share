@@ -15,21 +15,32 @@ import Footer from "./components/Footer";
 
 // ...
 
-export default function RootLayout({
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
+import BannedView from "./components/BannedView";
+
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await getServerSession(authOptions);
+  const isBanned = session?.user?.isBanned;
+
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${inter.className} min-h-screen flex flex-col`}>
-        <Providers>
-          <Navbar />
-          <div className="flex-grow">
-            {children}
-          </div>
-          <Footer />
-        </Providers>
+        {isBanned ? (
+          <BannedView />
+        ) : (
+          <Providers>
+            <Navbar />
+            <div className="flex-grow">
+              {children}
+            </div>
+            <Footer />
+          </Providers>
+        )}
       </body>
     </html>
   );

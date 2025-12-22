@@ -1,5 +1,5 @@
 
-import NextAuth, { DefaultSession } from "next-auth"
+import NextAuth, { DefaultSession, DefaultUser } from "next-auth"
 
 declare module "next-auth" {
     /**
@@ -7,8 +7,12 @@ declare module "next-auth" {
      */
     interface Session {
         user: {
-            /** The user's postal address. */
             id: string
+            isBanned: boolean
         } & DefaultSession["user"]
+    }
+
+    interface User extends DefaultUser {
+        isBanned: boolean
     }
 }
