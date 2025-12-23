@@ -39,8 +39,8 @@ export default function PrivacyPolicy() {
                     <p className="text-gray-600">
                         If you have any questions about this Privacy Policy, please contact us at:
                         <br />
-                        <a href="mailto:contact@earnreviewkarma.com" className="text-blue-600 hover:text-blue-800">
-                            contact@earnreviewkarma.com
+                        <a href="mailto:contact@friendlyreview.com" className="text-blue-600 hover:text-blue-800">
+                            contact@friendlyreview.com
                         </a>
                     </p>
                 </section>

@@ -8,7 +8,7 @@ export default function Footer() {
                     &copy; {new Date().getFullYear()} Review Share. All rights reserved.
                 </div>
                 <div className="flex gap-4">
-                    <a href="mailto:contact@earnreviewkarma.com" className="hover:text-blue-600 transition-colors">
+                    <a href="mailto:contact@friendlyreview.com" className="hover:text-blue-600 transition-colors">
                         Contact
                     </a>
                     <Link href="/privacy" className="hover:text-blue-600 transition-colors">

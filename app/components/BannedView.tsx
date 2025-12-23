@@ -23,8 +23,8 @@ export default function BannedView() {
                     <p className="text-red-800 font-medium">
                         If you believe this is a mistake, please contact us:
                     </p>
-                    <a href="mailto:contact@earnreviewkarma.com" className="text-red-700 font-bold underline hover:text-red-900 mt-1 block">
-                        contact@earnreviewkarma.com
+                    <a href="mailto:contact@friendlyreview.com" className="text-red-700 font-bold underline hover:text-red-900 mt-1 block">
+                        contact@friendlyreview.com
                     </a>
                 </div>
 

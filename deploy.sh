@@ -7,7 +7,8 @@ USER="ubuntu"
 HOST="ec2-3-146-210-181.us-east-2.compute.amazonaws.com"
 DOMAIN="earnreviewkarma.com"
 APP_DIR="/home/ubuntu/review-share"
-ZIP_FILE="earnreviewkarma.com.zip"
+ZIP_FILE_EARN="earnreviewkarma.com.zip"
+ZIP_FILE_FRIENDLY="friendlyreview.com.zip"
 
 # Colors
 GREEN='\033[0;32m'
@@ -44,7 +45,8 @@ rsync -avz --exclude 'node_modules' --exclude '.next' --exclude '.git' --exclude
 
 # 3. Upload Certificates
 echo -e "${GREEN}Uploading Certificates...${NC}"
-scp -i $KEY_PATH -o StrictHostKeyChecking=no $ZIP_FILE $USER@$HOST:$APP_DIR/certs.zip
+scp -i $KEY_PATH -o StrictHostKeyChecking=no $ZIP_FILE_EARN $USER@$HOST:$APP_DIR/certs_earn.zip
+scp -i $KEY_PATH -o StrictHostKeyChecking=no $ZIP_FILE_FRIENDLY $USER@$HOST:$APP_DIR/certs_friendly.zip
 scp -i $KEY_PATH -o StrictHostKeyChecking=no ./nginx.conf $USER@$HOST:$APP_DIR/nginx.conf
 
 # 4. Upload .env (Note: In real production, use secrets manager or manually set on server)
@@ -56,9 +58,18 @@ echo -e "${GREEN}Configuring Server...${NC}"
 ssh -i $KEY_PATH -o StrictHostKeyChecking=no $USER@$HOST "
     # Setup Certs
     cd $APP_DIR
-    unzip -o certs.zip -d certs
-    # Create full chain
-    cat certs/certificate.crt certs/ca_bundle.crt > certs/fullchain.crt
+    
+    # Prepare directories
+    mkdir -p certs/earn
+    mkdir -p certs/friendly
+    
+    # Earn Review Karma Certs
+    unzip -o certs_earn.zip -d certs/earn
+    cat certs/earn/certificate.crt certs/earn/ca_bundle.crt > certs/earn/fullchain.crt
+    
+    # Friendly Review Certs
+    unzip -o certs_friendly.zip -d certs/friendly
+    cat certs/friendly/certificate.crt certs/friendly/ca_bundle.crt > certs/friendly/fullchain.crt
     
     # Install dependencies & Build
     # Ensure using Node 20
