@@ -10,10 +10,9 @@ interface StatItem {
 }
 
 const stats: StatItem[] = [
-    { icon: '👨‍💻', value: 12500, suffix: '+', label: 'Developers Satisfied' },
-    { icon: '⭐', value: 850, suffix: '+', label: 'Reviews Exchanged' },
+    { icon: '👨‍💻', value: 100, suffix: '+', label: 'Developers Satisfied' },
+    { icon: '⭐', value: 60, suffix: '+', label: 'Reviews Exchanged' },
     { icon: '🏆', value: 4.8, suffix: '', label: 'Average Rating', prefix: '' },
-    { icon: '📅', value: 2022, suffix: '', label: 'Established', prefix: 'Since ' },
 ]
 
 function AnimatedCounter({
@@ -94,7 +93,7 @@ export default function TrustStats() {
                 </h2>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            <div className="grid grid-cols-3 gap-8">
                 {stats.map((stat, index) => (
                     <div
                         key={stat.label}
