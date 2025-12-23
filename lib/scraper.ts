@@ -13,11 +13,19 @@ export async function verifyReview(
         // 1. Fetch the Chrome Web Store page
         // Ensure we are fetching the reviews page specifically
         let targetUrl = productUrl;
+
+        // Strip query parameters first (e.g., ?hl=en-GB&authuser=3)
+        const urlObj = new URL(targetUrl);
+        targetUrl = urlObj.origin + urlObj.pathname;
+
         if (!targetUrl.endsWith('/reviews')) {
             // Remove trailing slash if exists to avoid double slash
             targetUrl = targetUrl.replace(/\/$/, '');
             targetUrl = `${targetUrl}/reviews`;
         }
+
+        console.log('[VERIFY] Fetching:', targetUrl);
+        console.log('[VERIFY] Looking for reviewer:', reviewerName);
 
         const response = await fetch(targetUrl, {
             headers: {
@@ -25,12 +33,16 @@ export async function verifyReview(
             }
         });
 
+        console.log('[VERIFY] Response status:', response.status);
+
         if (!response.ok) {
-            console.error(`Failed to fetch ${productUrl}: ${response.status}`);
+            console.error(`[VERIFY] Failed to fetch ${productUrl}: ${response.status}`);
             return false;
         }
 
         const html = await response.text();
+        console.log('[VERIFY] HTML length:', html.length);
+
         const $ = cheerio.load(html);
 
         // 2. Extract reviewer names
@@ -58,9 +70,13 @@ export async function verifyReview(
         // But let's try a direct text search as a primary fuzzy pass if selectors fail.
 
         const bodyText = $('body').text();
+        console.log('[VERIFY] Body text length:', bodyText.length);
 
         // Check if name is present with exact match first (case-insensitive)
-        if (bodyText.toLowerCase().includes(reviewerName.toLowerCase())) {
+        const nameFound = bodyText.toLowerCase().includes(reviewerName.toLowerCase());
+        console.log('[VERIFY] Name found in body?', nameFound);
+
+        if (nameFound) {
             return true;
         }
 
