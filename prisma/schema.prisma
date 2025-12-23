@@ -49,6 +49,8 @@ model User {
   // Custom fields
   respect       Int       @default(1)
   isBanned      Boolean   @default(false)
+  isPro         Boolean   @default(false)
+  subscriptionExpiresAt DateTime?
   products      Product[]
   reviews       Review[]
   suspectedActions Suspect[]
@@ -83,6 +85,7 @@ model Product {
   userId         String
   owner          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   reviewsReceived Review[]
+  createdAt      DateTime @default(now())
 }
 
 model Review {

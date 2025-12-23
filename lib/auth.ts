@@ -22,6 +22,8 @@ export const authOptions: NextAuthOptions = {
                 session.user.id = user.id;
                 // @ts-ignore - isBanned comes from Prisma adapter
                 session.user.isBanned = user.isBanned;
+                // @ts-ignore - isPro comes from Prisma adapter
+                session.user.isPro = user.isPro;
             }
             return session;
         },

@@ -5,9 +5,9 @@
 KEY_PATH="../keys/influtise.pem"
 USER="ubuntu"
 HOST="ec2-3-146-210-181.us-east-2.compute.amazonaws.com"
-DOMAIN="earnreviewkarma.com"
+DOMAIN="friendlyreview.com"
 APP_DIR="/home/ubuntu/review-share"
-ZIP_FILE_EARN="earnreviewkarma.com.zip"
+ZIP_FILE_EARN="friendlyreview.com.zip"
 ZIP_FILE_FRIENDLY="friendlyreview.com.zip"
 
 # Colors
@@ -88,8 +88,8 @@ ssh -i $KEY_PATH -o StrictHostKeyChecking=no $USER@$HOST "
     sudo ln -fs /etc/nginx/sites-available/$DOMAIN /etc/nginx/sites-enabled/
     sudo nginx -t && sudo systemctl restart nginx
 
-    # Start App with PM2
-    pm2 stop review-share || true
+    # Start App with PM2 (clean up old processes first)
+    pm2 delete review-share || true
     pm2 start npm --name 'review-share' -- start -- -p 3010
     pm2 save
 "

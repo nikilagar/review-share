@@ -65,7 +65,15 @@ export default async function ProfilePage() {
         <main className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
             <div className="max-w-4xl mx-auto space-y-8">
                 {/* Header Stats */}
-                <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex items-center justify-between">
+                <div className={`bg-white p-6 rounded-xl shadow-sm border ${user.isPro ? 'border-yellow-400 ring-2 ring-yellow-400' : 'border-gray-100'} flex items-center justify-between relative`}>
+                    {user.isPro && (
+                        <div className="absolute -top-3 left-6 bg-yellow-400 text-yellow-900 text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1 shadow-sm">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4">
+                                <path fillRule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401Z" clipRule="evenodd" />
+                            </svg>
+                            <span>PRO</span>
+                        </div>
+                    )}
                     <div>
                         <h1 className="text-2xl font-bold text-gray-900">Welcome, {user.name}</h1>
                         <p className="text-gray-500">{user.email}</p>
@@ -75,6 +83,26 @@ export default async function ProfilePage() {
                         <div className="text-4xl font-extrabold text-blue-600">{user.respect}</div>
                     </div>
                 </div>
+
+                {/* Pro Upgrade CTA (for non-Pro users) */}
+                {!user.isPro && (
+                    <div className="bg-gradient-to-r from-yellow-400 to-orange-500 p-6 rounded-xl shadow-sm text-white">
+                        <div className="flex items-center justify-between">
+                            <div>
+                                <h2 className="text-xl font-bold flex items-center gap-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-6 h-6">
+                                        <path fillRule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401Z" clipRule="evenodd" />
+                                    </svg>
+                                    Upgrade to Pro
+                                </h2>
+                                <p className="text-white/90 mt-1">Get 2x respect, pinned products, and a Pro badge!</p>
+                            </div>
+                            <a href="/pricing" className="bg-white text-orange-600 px-6 py-2 rounded-lg font-bold hover:bg-orange-50 transition-colors">
+                                $4.99/week
+                            </a>
+                        </div>
+                    </div>
+                )}
 
                 {/* Add Product Form */}
                 <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">

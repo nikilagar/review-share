@@ -51,6 +51,9 @@ export async function submitReview(productId: string, ownerId: string) {
     }
 
     // Transaction to ensure data consistency
+    const reviewer = await prisma.user.findUnique({ where: { id: session.user.id } });
+    const respectIncrement = reviewer?.isPro ? 2 : 1;
+
     await prisma.$transaction([
         // 1. Create Review
         prisma.review.create({
@@ -63,7 +66,7 @@ export async function submitReview(productId: string, ownerId: string) {
         // 2. Increment Reviewer Respect
         prisma.user.update({
             where: { id: session.user.id },
-            data: { respect: { increment: 1 } }
+            data: { respect: { increment: respectIncrement } }
         }),
         // 3. Decrement Owner Respect
         prisma.user.update({
