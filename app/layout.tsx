@@ -8,6 +8,9 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Friendly Review",
   description: "Share reviews and earn respect",
+  icons: {
+    icon: '/review-friendly-logo.png',
+  },
 };
 
 import Navbar from "./components/Navbar";
