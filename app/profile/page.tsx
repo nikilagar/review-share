@@ -11,7 +11,7 @@ import ProductImage from "@/app/components/ProductImage"
 // Expected: https://chromewebstore.google.com/detail/{name}/{id}
 const CHROME_STORE_PATTERN = /^https:\/\/chromewebstore\.google\.com\/detail\/[^\/]+\/[a-z]{32}(\?.*)?$/i;
 
-async function createProduct(formData: FormData): Promise<{ error?: string } | void> {
+async function createProduct(formData: FormData): Promise<{ error?: string; success?: boolean } | void> {
     'use server'
     const session = await getServerSession(authOptions)
     if (!session?.user?.email) return { error: "Not authenticated" };
