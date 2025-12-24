@@ -47,6 +47,7 @@ async function createProduct(formData: FormData): Promise<{ error?: string } | v
     }
 
     try {
+        console.log("[createProduct] Creating product:", { name, extensionId });
         await prisma.product.create({
             data: {
                 name,
@@ -57,7 +58,9 @@ async function createProduct(formData: FormData): Promise<{ error?: string } | v
                 owner: { connect: { email: session.user.email } }
             }
         })
+        console.log("[createProduct] Product created successfully");
         revalidatePath('/profile')
+        return { success: true };
     } catch (e: any) {
         if (e.code === 'P2002') {
             return { error: "This extension has already been added to the platform." };

@@ -7,7 +7,7 @@ import { useState } from "react"
 const CHROME_STORE_PATTERN = /^https:\/\/chromewebstore\.google\.com\/detail\/[^\/]+\/[a-z]{32}(\?.*)?$/i;
 
 interface AddProductFormProps {
-    createProduct: (formData: FormData) => Promise<{ error?: string } | void>
+    createProduct: (formData: FormData) => Promise<{ error?: string; success?: boolean } | void>
 }
 
 export default function AddProductForm({ createProduct }: AddProductFormProps) {
@@ -18,6 +18,7 @@ export default function AddProductForm({ createProduct }: AddProductFormProps) {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
+        const form = e.currentTarget
         setError(null)
         setIsSubmitting(true)
 
@@ -33,15 +34,16 @@ export default function AddProductForm({ createProduct }: AddProductFormProps) {
 
         try {
             const result = await createProduct(formData)
-            if (result?.error) {
+            if (result && result.error) {
                 setError(result.error)
             } else {
                 // Reset form on success
-                e.currentTarget.reset()
+                form.reset()
                 setNameCount(0)
                 setDescCount(0)
             }
         } catch (err) {
+            console.error("Client-side error during product creation:", err);
             setError("An unexpected error occurred")
         } finally {
             setIsSubmitting(false)
