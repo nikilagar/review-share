@@ -10,11 +10,6 @@ export default function Home() {
       {/* Hero Section */}
       <section className="flex flex-col items-center pt-20 px-4 pb-16">
         <div className="max-w-3xl text-center space-y-8">
-          <div className="inline-flex items-center gap-2 bg-blue-50 text-blue-700 px-4 py-2 rounded-full text-sm font-medium mb-4">
-            <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-            Trusted by 100+ developers
-          </div>
-
           <h1 className="text-6xl font-extrabold tracking-tight text-gray-900">
             Earn Respect.<br />
             <span className="text-blue-600">Get Reviewed.</span>
@@ -30,8 +25,8 @@ export default function Home() {
           <div className="inline-flex items-center gap-3 bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 px-6 py-3 rounded-xl mt-6">
             <span className="text-2xl">✅</span>
             <div className="text-left">
-              <p className="font-semibold text-green-800">Guaranteed: At least 5 reviews within 24 hours</p>
-              <p className="text-sm text-green-600">Get 20+ reviews within your first week</p>
+              <p className="font-semibold text-green-800">Reviews guaranteed within 24 hours of earning respect</p>
+              <p className="text-sm text-green-600">100+ developers already trading reviews</p>
             </div>
           </div>
 
