@@ -4,11 +4,17 @@ import { redirect } from "next/navigation"
 import { prisma } from "@/lib/prisma"
 import { authOptions } from "@/lib/auth"
 import { revalidatePath } from "next/cache"
+import AddProductForm from "./AddProductForm"
+import ProductImage from "@/app/components/ProductImage"
 
-async function createProduct(formData: FormData) {
+// Validate Chrome Web Store URL format
+// Expected: https://chromewebstore.google.com/detail/{name}/{id}
+const CHROME_STORE_PATTERN = /^https:\/\/chromewebstore\.google\.com\/detail\/[^\/]+\/[a-z]{32}(\?.*)?$/i;
+
+async function createProduct(formData: FormData): Promise<{ error?: string } | void> {
     'use server'
     const session = await getServerSession(authOptions)
-    if (!session?.user?.email) return;
+    if (!session?.user?.email) return { error: "Not authenticated" };
 
     const name = formData.get("name") as string
     const description = formData.get("description") as string
@@ -16,8 +22,12 @@ async function createProduct(formData: FormData) {
     const iconUrl = formData.get("iconUrl") as string
 
     if (!name || !description || !chromeStoreUrl || !iconUrl) {
-        // Basic validation
-        return;
+        return { error: "All fields are required" };
+    }
+
+    // Server-side validation of Chrome Web Store URL
+    if (!CHROME_STORE_PATTERN.test(chromeStoreUrl)) {
+        return { error: "Invalid Chrome Web Store URL format" };
     }
 
     await prisma.product.create({
@@ -107,29 +117,7 @@ export default async function ProfilePage() {
                 {/* Add Product Form */}
                 <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
                     <h2 className="text-xl font-bold mb-4">Add Your Product</h2>
-                    <form action={createProduct} className="space-y-4">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Product Name</label>
-                                <input name="name" type="text" required className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" placeholder="My Awesome Extension" />
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Store URL</label>
-                                <input name="chromeStoreUrl" type="url" required className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" placeholder="https://chrome.google.com/webstore/..." />
-                            </div>
-                        </div>
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
-                            <textarea name="description" required className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" rows={3} placeholder="Describe what your extension does..."></textarea>
-                        </div>
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Icon URL (128x128)</label>
-                            <input name="iconUrl" type="url" required className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" placeholder="https://example.com/icon.png" />
-                        </div>
-                        <button type="submit" className="w-full py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors">
-                            Add Product
-                        </button>
-                    </form>
+                    <AddProductForm createProduct={createProduct} />
                 </div>
 
                 {/* My Products List */}
@@ -143,7 +131,7 @@ export default async function ProfilePage() {
                         <div className="grid gap-4">
                             {user.products.map(product => (
                                 <div key={product.id} className="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex items-start gap-4">
-                                    <img src={product.iconUrl} alt={product.name} className="w-16 h-16 rounded-lg object-contain bg-gray-50" />
+                                    <ProductImage src={product.iconUrl} alt={product.name} className="w-16 h-16 rounded-lg object-contain bg-gray-50" />
                                     <div className="flex-1">
                                         <div className="flex justify-between items-start">
                                             <h3 className="font-bold text-lg">{product.name}</h3>

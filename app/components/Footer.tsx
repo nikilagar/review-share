@@ -5,7 +5,7 @@ export default function Footer() {
         <footer className="bg-white border-t py-8 mt-auto">
             <div className="max-w-7xl mx-auto px-4 flex justify-between items-center text-sm text-gray-500">
                 <div>
-                    &copy; {new Date().getFullYear()} Review Share. All rights reserved.
+                    &copy; {new Date().getFullYear()} Friendly Review. All rights reserved.
                 </div>
                 <div className="flex gap-4">
                     <a href="mailto:contact@friendlyreview.com" className="hover:text-blue-600 transition-colors">

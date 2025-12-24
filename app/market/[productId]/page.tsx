@@ -5,6 +5,7 @@ import { prisma } from "@/lib/prisma"
 import { authOptions } from "@/lib/auth"
 import Link from "next/link"
 import ReviewButton from "./ReviewButton"
+import ProductImage from "@/app/components/ProductImage"
 
 export default async function ReviewPage({ params }: { params: Promise<{ productId: string }> }) {
     const session = await getServerSession(authOptions)
@@ -31,7 +32,7 @@ export default async function ReviewPage({ params }: { params: Promise<{ product
     return (
         <main className="min-h-screen bg-gray-50 flex flex-col items-center pt-20 px-4">
             <div className="bg-white p-8 rounded-xl shadow-lg max-w-2xl w-full text-center space-y-6">
-                <img src={product.iconUrl} alt={product.name} className="w-24 h-24 mx-auto rounded-xl object-contain" />
+                <ProductImage src={product.iconUrl} alt={product.name} className="w-24 h-24 mx-auto rounded-xl object-contain" />
 
                 <div>
                     <h1 className="text-3xl font-bold">{product.name}</h1>

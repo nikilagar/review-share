@@ -4,10 +4,17 @@ import { redirect } from "next/navigation"
 import { prisma } from "@/lib/prisma"
 import { authOptions } from "@/lib/auth"
 import Link from "next/link"
+import ProductImage from "@/app/components/ProductImage"
 
 export default async function MarketPage() {
     const session = await getServerSession(authOptions)
     if (!session?.user?.email) redirect("/") // Simple protection
+
+    // Get current user's pro status
+    const currentUser = await prisma.user.findUnique({
+        where: { email: session.user.email },
+        select: { isPro: true }
+    })
 
     const products = await prisma.product.findMany({
         where: {
@@ -54,7 +61,7 @@ export default async function MarketPage() {
                                     </div>
                                 )}
                                 <div className="flex items-start justify-between mb-4">
-                                    <img src={product.iconUrl} alt={product.name} className="w-16 h-16 rounded-lg object-contain bg-gray-50" />
+                                    <ProductImage src={product.iconUrl} alt={product.name} className="w-16 h-16 rounded-lg object-contain bg-gray-50" />
                                     <span className="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded-full font-medium">
                                         Owner Respect: {product.owner.respect}
                                     </span>
@@ -68,7 +75,7 @@ export default async function MarketPage() {
                                         href={`/market/${product.id}`}
                                         className="block w-full text-center py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors font-medium"
                                     >
-                                        Review This
+                                        Review This (+{currentUser?.isPro ? 2 : 1} Respect)
                                     </Link>
                                 </div>
                             </div>

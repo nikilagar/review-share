@@ -20,11 +20,20 @@ export default function Home() {
             <span className="text-blue-600">Get Reviewed.</span>
           </h1>
           <p className="text-xl text-gray-500 max-w-2xl mx-auto">
-            Review Share is a community-driven marketplace. Review other creator's extensions to earn credentials,
+            Friendly Review is a community-driven marketplace. Review other creator's extensions to earn credentials,
             and use that respect to get your own products featured.
           </p>
 
           <AuthCtaButtons />
+
+          {/* Guarantee Badge */}
+          <div className="inline-flex items-center gap-3 bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 px-6 py-3 rounded-xl mt-6">
+            <span className="text-2xl">✅</span>
+            <div className="text-left">
+              <p className="font-semibold text-green-800">Guaranteed: At least 5 reviews within 24 hours</p>
+              <p className="text-sm text-green-600">Get 20+ reviews within your first week</p>
+            </div>
+          </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pt-20 text-left">
             <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md hover:border-blue-100 transition-all duration-300">

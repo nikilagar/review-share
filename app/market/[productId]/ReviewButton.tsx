@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from "react"
+import { useState, useEffect, useRef } from "react"
 import { submitReview } from "@/app/actions"
 import Link from "next/link"
 
@@ -8,6 +8,25 @@ export default function ReviewButton({ productId, ownerId }: { productId: string
     const [status, setStatus] = useState<'IDLE' | 'LOADING' | 'SUCCESS' | 'ERROR'>('IDLE')
     const [showModal, setShowModal] = useState(false)
     const [errorMessage, setErrorMessage] = useState("")
+    const [countdown, setCountdown] = useState<number | null>(null)
+    const timerRef = useRef<NodeJS.Timeout | null>(null)
+
+    useEffect(() => {
+        // Cleanup timer on unmount
+        return () => {
+            if (timerRef.current) {
+                clearInterval(timerRef.current)
+            }
+        }
+    }, [])
+
+    // Trigger verification when countdown finishes
+    useEffect(() => {
+        if (countdown === 0) {
+            setCountdown(null)
+            handleConfirm()
+        }
+    }, [countdown])
 
     const handleConfirm = async () => {
         setStatus('LOADING')
@@ -23,6 +42,22 @@ export default function ReviewButton({ productId, ownerId }: { productId: string
             setStatus('ERROR')
             setErrorMessage("An unexpected error occurred")
         }
+    }
+
+    const startCountdown = () => {
+        setCountdown(15)
+        timerRef.current = setInterval(() => {
+            setCountdown(prev => {
+                if (prev === null || prev <= 1) {
+                    if (timerRef.current) {
+                        clearInterval(timerRef.current)
+                        timerRef.current = null
+                    }
+                    return 0
+                }
+                return prev - 1
+            })
+        }, 1000)
     }
 
 
@@ -80,6 +115,35 @@ export default function ReviewButton({ productId, ownerId }: { productId: string
                                     Back to Market
                                 </Link>
                             </div>
+                        ) : countdown !== null ? (
+                            <div className="text-center space-y-4">
+                                <div className="relative mx-auto w-20 h-20">
+                                    <svg className="w-20 h-20 transform -rotate-90" viewBox="0 0 36 36">
+                                        <path
+                                            d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                                            fill="none"
+                                            stroke="#E5E7EB"
+                                            strokeWidth="3"
+                                        />
+                                        <path
+                                            d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                                            fill="none"
+                                            stroke="#3B82F6"
+                                            strokeWidth="3"
+                                            strokeDasharray={`${((15 - countdown) / 15) * 100}, 100`}
+                                            className="transition-all duration-1000 ease-linear"
+                                        />
+                                    </svg>
+                                    <span className="absolute inset-0 flex items-center justify-center text-2xl font-bold text-blue-600">
+                                        {countdown}
+                                    </span>
+                                </div>
+                                <h3 className="text-lg font-bold text-gray-800">Waiting for Google...</h3>
+                                <p className="text-sm text-gray-600 leading-relaxed">
+                                    It takes a few seconds for Google to publish your review. <br />
+                                    Please wait while we verify...
+                                </p>
+                            </div>
                         ) : (
                             <>
                                 <div className="flex items-center gap-3 text-red-600">
@@ -105,7 +169,7 @@ export default function ReviewButton({ productId, ownerId }: { productId: string
                                         Cancel
                                     </button>
                                     <button
-                                        onClick={handleConfirm}
+                                        onClick={startCountdown}
                                         disabled={status === 'LOADING'}
                                         className="flex-1 py-2.5 px-4 bg-red-600 text-white font-semibold rounded-lg hover:bg-red-700 transition-colors disabled:opacity-50 flex justify-center"
                                     >

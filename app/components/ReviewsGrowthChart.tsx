@@ -209,7 +209,7 @@ export default function ReviewsGrowthChart() {
             </div>
 
             <p className="text-center text-gray-500 text-sm mt-6">
-                Cumulative reviews exchanged through Review Share in 2024
+                Cumulative reviews exchanged through Friendly Review in 2024
             </p>
         </div>
     )

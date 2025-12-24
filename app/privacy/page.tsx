@@ -10,7 +10,7 @@ export default function PrivacyPolicy() {
                 <section className="space-y-4">
                     <h2 className="text-xl font-semibold text-gray-900">1. Introduction</h2>
                     <p className="text-gray-600">
-                        Welcome to Review Share ("we," "our," or "us"). We are committed to protecting your privacy and ensuring you have a positive experience on our website. This Privacy Policy explains our practices regarding the collection, use, and disclosure of your information.
+                        Welcome to Friendly Review ("we," "our," or "us"). We are committed to protecting your privacy and ensuring you have a positive experience on our website. This Privacy Policy explains our practices regarding the collection, use, and disclosure of your information.
                     </p>
                 </section>
 
