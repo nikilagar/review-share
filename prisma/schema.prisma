@@ -81,6 +81,7 @@ model Product {
   name           String
   description    String
   chromeStoreUrl String
+  extensionId    String   @unique
   iconUrl        String
   userId         String
   owner          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
