@@ -1,6 +1,9 @@
 'use client'
 
+'use client'
+
 import { useState } from "react"
+import PostShareDialog from "./PostShareDialog"
 
 // Validate Chrome Web Store URL format
 // Expected: https://chromewebstore.google.com/detail/{name}/{id}
@@ -8,11 +11,14 @@ const CHROME_STORE_PATTERN = /^https:\/\/chromewebstore\.google\.com\/detail\/[^
 
 interface AddProductFormProps {
     createProduct: (formData: FormData) => Promise<{ error?: string; success?: boolean } | void>
+    userRespect: number
 }
 
-export default function AddProductForm({ createProduct }: AddProductFormProps) {
+export default function AddProductForm({ createProduct, userRespect }: AddProductFormProps) {
     const [error, setError] = useState<string | null>(null)
     const [isSubmitting, setIsSubmitting] = useState(false)
+    const [showSuccessDialog, setShowSuccessDialog] = useState(false)
+    const [addedProductName, setAddedProductName] = useState("")
     const [nameCount, setNameCount] = useState(0)
     const [descCount, setDescCount] = useState(0)
 
@@ -37,7 +43,11 @@ export default function AddProductForm({ createProduct }: AddProductFormProps) {
             if (result && result.error) {
                 setError(result.error)
             } else {
-                // Reset form on success
+                // Success!
+                setAddedProductName(formData.get("name") as string)
+                setShowSuccessDialog(true)
+
+                // Reset form
                 form.reset()
                 setNameCount(0)
                 setDescCount(0)
@@ -52,6 +62,12 @@ export default function AddProductForm({ createProduct }: AddProductFormProps) {
 
     return (
         <form onSubmit={handleSubmit} className="space-y-4">
+            <PostShareDialog
+                isOpen={showSuccessDialog}
+                onClose={() => setShowSuccessDialog(false)}
+                userRespect={userRespect}
+                productName={addedProductName}
+            />
             {error && (
                 <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
                     {error}

@@ -146,7 +146,7 @@ export default async function ProfilePage() {
                 {/* Add Product Form */}
                 <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
                     <h2 className="text-xl font-bold mb-4">Add Your Product</h2>
-                    <AddProductForm createProduct={createProduct} />
+                    <AddProductForm createProduct={createProduct} userRespect={user.respect} />
                 </div>
 
                 {/* My Products List */}
