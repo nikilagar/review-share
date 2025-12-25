@@ -21,8 +21,15 @@ export default function Navbar() {
 
     return (
         <nav className="p-4 bg-white border-b flex justify-between items-center sticky top-0 z-50">
-            <Link href="/" className="text-xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
-                Friendly Review
+            <Link href="/" className="flex items-center gap-2 group">
+                <img
+                    src="/review-friendly-logo.png"
+                    alt="Friendly Review Logo"
+                    className="w-10 h-10 object-contain"
+                />
+                <span className="text-xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+                    Friendly Review
+                </span>
             </Link>
             <div className="flex gap-6 items-center">
                 {session ? (
