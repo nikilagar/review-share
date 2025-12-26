@@ -20,7 +20,7 @@ export default function PostShareDialog({ isOpen, onClose, userRespect, productN
 
     const handleShareOnX = async () => {
         setIsSharing(true)
-        const text = encodeURIComponent(`Just listed ${productName} on @ReviewShare! 🚀\n\nIf you're a Chrome extension developer, come exchange reviews with us and build trust faster.\n\n#buildinpublic #chromeextensions #indiehacker`)
+        const text = encodeURIComponent(`Just listed ${productName} on friendlyreview.com! 🚀\n\nIf you're a Chrome extension developer, come exchange reviews with us and build trust faster.\n\n#buildinpublic #chromeextensions #indiehacker #friendlyreview`)
         const url = encodeURIComponent('https://friendlyreview.com') // Or specific product URL if available
         const xUrl = `https://twitter.com/intent/tweet?text=${text}&url=${url}`
 
