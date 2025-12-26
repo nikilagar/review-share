@@ -26,7 +26,7 @@ export default async function MarketPage() {
         },
         include: {
             owner: {
-                select: { name: true, respect: true, isPro: true }
+                select: { name: true, respect: true, isPro: true, subscriptionExpiresAt: true }
             }
         },
         orderBy: [
@@ -50,36 +50,40 @@ export default async function MarketPage() {
                     </div>
                 ) : (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {products.map(product => (
-                            <div key={product.id} className={`bg-white rounded-xl shadow-sm border ${product.owner.isPro ? 'border-indigo-400 ring-1 ring-indigo-400' : 'border-gray-100'} p-6 flex flex-col h-full hover:shadow-md transition-shadow relative`}>
-                                {product.owner.isPro && (
-                                    <div className="absolute -top-2 -left-2 bg-indigo-500 text-white text-xs font-bold px-2 py-1 rounded-full flex items-center gap-1 shadow-sm">
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-3 h-3">
-                                            <path fillRule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401Z" clipRule="evenodd" />
-                                        </svg>
-                                        <span>PRO</span>
+                        {products.map(product => {
+                            const isPro = product.owner.isPro && (!product.owner.subscriptionExpiresAt || new Date(product.owner.subscriptionExpiresAt) > new Date());
+
+                            return (
+                                <div key={product.id} className={`bg-white rounded-xl shadow-sm border ${isPro ? 'border-indigo-400 ring-1 ring-indigo-400' : 'border-gray-100'} p-6 flex flex-col h-full hover:shadow-md transition-shadow relative`}>
+                                    {isPro && (
+                                        <div className="absolute -top-2 -left-2 bg-indigo-500 text-white text-xs font-bold px-2 py-1 rounded-full flex items-center gap-1 shadow-sm">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-3 h-3">
+                                                <path fillRule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401Z" clipRule="evenodd" />
+                                            </svg>
+                                            <span>PRO</span>
+                                        </div>
+                                    )}
+                                    <div className="flex items-start justify-between mb-4">
+                                        <ProductImage src={product.iconUrl} alt={product.name} className="w-16 h-16 rounded-lg object-contain bg-gray-50" />
+                                        <span className="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded-full font-medium">
+                                            Owner Respect: {product.owner.respect}
+                                        </span>
                                     </div>
-                                )}
-                                <div className="flex items-start justify-between mb-4">
-                                    <ProductImage src={product.iconUrl} alt={product.name} className="w-16 h-16 rounded-lg object-contain bg-gray-50" />
-                                    <span className="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded-full font-medium">
-                                        Owner Respect: {product.owner.respect}
-                                    </span>
+                                    <h3 className="text-xl font-bold mb-2">{product.name}</h3>
+                                    <p className="text-gray-600 text-sm mb-4 line-clamp-3">
+                                        {product.description}
+                                    </p>
+                                    <div className="mt-auto pt-4 border-t">
+                                        <Link
+                                            href={`/market/${product.id}`}
+                                            className="block w-full text-center py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors font-medium"
+                                        >
+                                            Review This (+{currentUser?.isPro ? 2 : 1} Respect)
+                                        </Link>
+                                    </div>
                                 </div>
-                                <h3 className="text-xl font-bold mb-2">{product.name}</h3>
-                                <p className="text-gray-600 text-sm mb-4 line-clamp-3">
-                                    {product.description}
-                                </p>
-                                <div className="mt-auto pt-4 border-t">
-                                    <Link
-                                        href={`/market/${product.id}`}
-                                        className="block w-full text-center py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors font-medium"
-                                    >
-                                        Review This (+{currentUser?.isPro ? 2 : 1} Respect)
-                                    </Link>
-                                </div>
-                            </div>
-                        ))}
+                            )
+                        })}
                     </div>
                 )}
             </div>

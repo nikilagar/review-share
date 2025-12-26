@@ -38,7 +38,7 @@ export async function POST(req: Request) {
             product_id: process.env.DODO_PRODUCT_ID!,
             quantity: 1,
             payment_link: true,
-            return_url: `${appUrl}/profile?success=true`,
+            return_url: `${appUrl}/profile`,
             metadata: {
                 userId: session.user.id,
             },
@@ -47,7 +47,7 @@ export async function POST(req: Request) {
         console.log("Created Dodo Subscription:", {
             id: subscription.subscription_id,
             paymentLink: subscription.payment_link,
-            returnUrl: `${appUrl}/profile?success=true`
+            returnUrl: `${appUrl}/profile`
         });
 
         return NextResponse.json({ url: subscription.payment_link });

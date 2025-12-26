@@ -113,7 +113,27 @@ export default function BillingPage() {
             )}
 
             <div className="max-w-2xl mx-auto space-y-8">
-                {/* ... (Header and Message remain) ... */}
+                <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 text-center space-y-4">
+                    <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight">Billing & Subscription</h1>
+                    <p className="text-gray-500 text-lg">Manage your Pro features and billing history</p>
+                </div>
+
+                {message && (
+                    <div className={`p-4 rounded-xl border ${message.type === 'success' ? 'bg-green-50 border-green-200 text-green-700' : 'bg-red-50 border-red-200 text-red-700'} animate-in slide-in-from-top-2 duration-300`}>
+                        <div className="flex items-center gap-3">
+                            {message.type === 'success' ? (
+                                <svg className="h-5 w-5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                </svg>
+                            ) : (
+                                <svg className="h-5 w-5 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            )}
+                            <p className="font-medium">{message.text}</p>
+                        </div>
+                    </div>
+                )}
 
                 <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
                     {/* ... (Current Plan section remains) ... */}

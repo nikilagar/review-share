@@ -6,6 +6,7 @@ import { revalidatePath } from "next/cache"
 import StartCheckoutButton from "../components/StartCheckoutButton"
 import AddProductForm from "./AddProductForm"
 import ProductImage from "@/app/components/ProductImage"
+import PaymentStatus from "./PaymentStatus"
 
 // Validate Chrome Web Store URL format
 // Expected: https://chromewebstore.google.com/detail/{name}/{id}
@@ -103,6 +104,8 @@ export default async function ProfilePage() {
     return (
         <main className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
             <div className="max-w-4xl mx-auto space-y-8">
+                <PaymentStatus />
+
                 {/* Header Stats */}
                 <div className={`bg-white p-6 rounded-xl shadow-sm border ${user.isPro ? 'border-indigo-400 ring-2 ring-indigo-400' : 'border-gray-100'} flex items-center justify-between relative`}>
                     {user.isPro && (
@@ -178,7 +181,7 @@ export default async function ProfilePage() {
                         </div>
                     )}
                 </div>
-            </div >
-        </main >
+            </div>
+        </main>
     )
 }

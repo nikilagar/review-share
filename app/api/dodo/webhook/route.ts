@@ -48,9 +48,13 @@ export async function POST(req: Request) {
             });
 
             if (metadata?.userId) {
-                // Calculate expiration based on event content if available, or default to 1 week
-                const expiresAt = new Date();
-                expiresAt.setDate(expiresAt.getDate() + 7);
+                // Use next_billing_date from Dodo if available, otherwise fallback to 7 days
+                const nextBillingDate = event.data.next_billing_date || event.data.object?.next_billing_date;
+                const expiresAt = nextBillingDate ? new Date(nextBillingDate) : new Date();
+
+                if (!nextBillingDate) {
+                    expiresAt.setDate(expiresAt.getDate() + 7);
+                }
 
                 await prisma.user.update({
                     where: {
