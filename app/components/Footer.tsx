@@ -14,6 +14,9 @@ export default function Footer() {
                     <Link href="/privacy" className="hover:text-blue-600 transition-colors">
                         Privacy Policy
                     </Link>
+                    <a href="https://x.com/LeoSideris" target="_blank" rel="noopener noreferrer" className="hover:text-blue-600 transition-colors">
+                        Twitter
+                    </a>
                 </div>
             </div>
         </footer>
