@@ -9,10 +9,14 @@ declare module "next-auth" {
         user: {
             id: string
             isBanned: boolean
+            isPro: boolean
         } & DefaultSession["user"]
     }
 
     interface User extends DefaultUser {
         isBanned: boolean
+        isPro: boolean
+        subscriptionExpiresAt: Date | null
+        dodoSubscriptionId: string | null
     }
 }

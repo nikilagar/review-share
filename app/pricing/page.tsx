@@ -1,30 +1,8 @@
 'use client'
 
-import { useState } from 'react'
+import StartCheckoutButton from "../components/StartCheckoutButton"
 
 export default function PricingPage() {
-    const [loading, setLoading] = useState(false)
-
-    const handleSubscribe = async () => {
-        setLoading(true)
-        try {
-            const res = await fetch('/api/dodo/checkout', { method: 'POST' })
-            const data = await res.json()
-
-            if (!res.ok) {
-                throw new Error(data.error || 'Failed to start checkout')
-            }
-
-            if (data.url) {
-                window.location.href = data.url
-            }
-        } catch (error: any) {
-            console.error(error)
-            alert(error.message || "Something went wrong")
-        } finally {
-            setLoading(false)
-        }
-    }
 
     return (
         <main className="min-h-screen bg-gray-50 py-20 px-4">
@@ -55,16 +33,15 @@ export default function PricingPage() {
                             <li>• Premium visibility</li>
                         </ul>
                         <div className="pt-4">
-                            <span className="text-3xl font-bold">$4.99</span>
+                            <span className="text-3xl font-bold">$1.99</span>
                             <span className="text-gray-500">/week</span>
+                            <p className="text-xs text-indigo-100 mt-1">Auto-renews weekly. Cancel any time.</p>
                         </div>
-                        <button
-                            onClick={handleSubscribe}
-                            disabled={loading}
+                        <StartCheckoutButton
                             className="w-full py-3 bg-black text-white font-bold rounded-lg hover:bg-gray-800 transition-colors disabled:opacity-50"
                         >
-                            {loading ? 'Processing...' : 'Upgrade Now'}
-                        </button>
+                            Upgrade Now
+                        </StartCheckoutButton>
                     </div>
                 </div>
             </div>

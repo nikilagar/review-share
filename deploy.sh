@@ -79,6 +79,9 @@ ssh -i $KEY_PATH -o StrictHostKeyChecking=no $USER@$HOST "
     npm install
     # Generate Prisma Client to fix type errors
     npx prisma generate
+    # Push DB changes
+    npx prisma db push
+    
     npm run build
     
     # Configure Nginx

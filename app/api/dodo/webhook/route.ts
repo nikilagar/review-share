@@ -37,7 +37,15 @@ export async function POST(req: Request) {
 
     try {
         if (event.type === "payment.succeeded" || event.type === "subscription.active") {
-            const metadata = event.data.metadata;
+            const metadata = event.data.metadata || event.data.object?.metadata;
+            const subscriptionId = event.data.subscription_id || event.data.object?._id;
+
+            console.log("Processing subscription activation:", {
+                type: event.type,
+                metadata,
+                subscriptionId,
+                data: event.data
+            });
 
             if (metadata?.userId) {
                 // Calculate expiration based on event content if available, or default to 1 week
@@ -51,7 +59,24 @@ export async function POST(req: Request) {
                     data: {
                         isPro: true,
                         subscriptionExpiresAt: expiresAt,
+                        dodoSubscriptionId: subscriptionId || undefined,
+                        cancelAtPeriodEnd: false,
                     },
+                });
+                console.log(`Successfully upgraded user ${metadata.userId} to Pro.`);
+            } else {
+                console.error("Missing userId in metadata for subscription activation.");
+            }
+        }
+
+        if (event.type === "subscription.updated") {
+            const subscriptionId = event.data.subscription_id;
+            const cancelAtNextBillingDate = event.data.cancel_at_next_billing_date;
+
+            if (subscriptionId) {
+                await prisma.user.update({
+                    where: { dodoSubscriptionId: subscriptionId },
+                    data: { cancelAtPeriodEnd: !!cancelAtNextBillingDate }
                 });
             }
         }

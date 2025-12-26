@@ -52,7 +52,13 @@ export async function submitReview(productId: string, ownerId: string) {
 
     // Transaction to ensure data consistency
     const reviewer = await prisma.user.findUnique({ where: { id: session.user.id } });
-    const respectIncrement = reviewer?.isPro ? 2 : 1;
+
+    let respectIncrement = 1;
+    if (reviewer) {
+        const { validateProStatus } = await import("@/lib/billing");
+        const isValidPro = await validateProStatus(reviewer);
+        respectIncrement = isValidPro ? 2 : 1;
+    }
 
     await prisma.$transaction([
         // 1. Create Review
@@ -77,4 +83,52 @@ export async function submitReview(productId: string, ownerId: string) {
 
     // revalidatePath('/') // Removed to prevent UI unmount
     return { success: true, verified: true };
+}
+
+export async function rewardShare() {
+    const session = await getServerSession(authOptions)
+    if (!session?.user?.id) return { success: false, error: "Not authenticated" };
+
+    try {
+        await prisma.user.update({
+            where: { id: session.user.id },
+            data: { respect: { increment: 1 } }
+        })
+        revalidatePath('/profile')
+        return { success: true };
+    } catch (error) {
+        console.error("Failed to reward share:", error);
+        return { success: false, error: "Failed to reward share" };
+    }
+}
+
+export async function cancelSubscription() {
+    const session = await getServerSession(authOptions)
+    if (!session?.user?.id) return { success: false, error: "Not authenticated" };
+
+    const user = await prisma.user.findUnique({
+        where: { id: session.user.id }
+    })
+
+    if (!user?.dodoSubscriptionId) {
+        return { success: false, error: "No active subscription found" };
+    }
+
+    try {
+        const { dodo } = await import("@/lib/dodo")
+        await dodo.subscriptions.update(user.dodoSubscriptionId, {
+            cancel_at_next_billing_date: true
+        });
+
+        await prisma.user.update({
+            where: { id: session.user.id },
+            data: { cancelAtPeriodEnd: true }
+        });
+
+        revalidatePath('/billing')
+        return { success: true };
+    } catch (error: any) {
+        console.error("Failed to cancel subscription:", error);
+        return { success: false, error: error.message || "Failed to cancel subscription" };
+    }
 }

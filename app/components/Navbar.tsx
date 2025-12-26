@@ -70,8 +70,18 @@ export default function Navbar() {
                                         <p className="text-sm font-medium text-gray-900 truncate">{session.user?.name}</p>
                                         <p className="text-xs text-gray-500 truncate">{session.user?.email}</p>
                                     </div>
+                                    <Link
+                                        href="/billing"
+                                        onClick={() => setShowDropdown(false)}
+                                        className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors flex items-center gap-2"
+                                    >
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 text-gray-500">
+                                            <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-1.5 1.5h.008v.008H12v-.008z" />
+                                        </svg>
+                                        Billing
+                                    </Link>
                                     <button
-                                        onClick={() => signOut()}
+                                        onClick={() => signOut({ callbackUrl: "/" })}
                                         className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors flex items-center gap-2"
                                     >
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">

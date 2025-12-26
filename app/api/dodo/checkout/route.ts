@@ -13,8 +13,11 @@ export async function POST(req: Request) {
 
         // Create a payment link or session
         // Dodo Payments API for creating a session
+        const appUrl = process.env.NEXT_PUBLIC_APP_URL;
+
         console.log("Dodo Debug:", {
             env: process.env.NODE_ENV,
+            appUrl,
             keyPrefix: process.env.DODO_PAYMENTS_API_KEY?.substring(0, 5),
             productId: process.env.DODO_PRODUCT_ID
         });
@@ -35,10 +38,16 @@ export async function POST(req: Request) {
             product_id: process.env.DODO_PRODUCT_ID!,
             quantity: 1,
             payment_link: true,
-            return_url: `${process.env.NEXT_PUBLIC_APP_URL}/profile?success=true`,
+            return_url: `${appUrl}/profile?success=true`,
             metadata: {
                 userId: session.user.id,
             },
+        });
+
+        console.log("Created Dodo Subscription:", {
+            id: subscription.subscription_id,
+            paymentLink: subscription.payment_link,
+            returnUrl: `${appUrl}/profile?success=true`
         });
 
         return NextResponse.json({ url: subscription.payment_link });

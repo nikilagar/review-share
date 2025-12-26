@@ -50,6 +50,8 @@ model User {
   respect       Int       @default(1)
   isBanned      Boolean   @default(false)
   isPro         Boolean   @default(false)
+  dodoSubscriptionId String? @unique
+  cancelAtPeriodEnd Boolean   @default(false)
   subscriptionExpiresAt DateTime?
   products      Product[]
   reviews       Review[]
