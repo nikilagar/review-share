@@ -3,6 +3,7 @@ import AuthCtaButtons from "./components/AuthCtaButtons";
 import TrustStats from "./components/TrustStats";
 import ReviewsGrowthChart from "./components/ReviewsGrowthChart";
 import SocialProof from "./components/SocialProof";
+import DemoVideo from "./components/DemoVideo";
 
 export default function Home() {
   return (
@@ -28,7 +29,10 @@ export default function Home() {
               <p className="font-semibold text-green-800">Reviews guaranteed within 24 hours of earning respect</p>
               <p className="text-sm text-green-600">100+ developers already trading reviews</p>
             </div>
+
           </div>
+
+          <DemoVideo />
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pt-20 text-left">
             <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md hover:border-blue-100 transition-all duration-300">
